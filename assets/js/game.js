@@ -99,15 +99,20 @@ var fightOrSkip = function() {
 }
 
 var fight = function(enemy) {
+  var isPlayerTurn = true;
+
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
+
     while (playerInfo.health > 0 && enemy.health > 0) {
+     if (isPlayerTurn){ 
       if (fightOrSkip()) {
         break;
       }
+
       var damage = randomNumber(playerInfo.attack -3, playerInfo.attack);
   
-      //generate random damage value based on player's attack power
-      var damage = randomNumber(playerInfo.attack -3, playerInfo.attack);
-
       enemy.health = Math.max(0, enemy.health - damage);
 
       console.log(
@@ -126,6 +131,8 @@ var fight = function(enemy) {
       } else {
         window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
       }
+      // player gets attacked first
+      } else {
 
       var damage = randomNumber(enemy.attack -3, enemy.attack);
 
@@ -144,6 +151,8 @@ var fight = function(enemy) {
         window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
       }
     }
+    isPlayerTurn = !isPlayerTurn
+  }
   };
 var startGame = function() {
   // reset player stats
@@ -199,20 +208,17 @@ var endGame = function() {
 };
 var shop = function(){
   var shopOptionPrompt = window.prompt (
-    "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', OR 'LEAVE' to make a choice."
+    "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one. 1 for REFILL, 2 for UPGRADE', or 3 for LEAVE."
   )
-    // use switch to carry out action
+    shopOptionPrompt = parseInt(shopOptionPrompt);
     switch (shopOptionPrompt){
-      case "refill": //New case
-      case "REFILL":
+      case 1:
         playerInfo.refillHealth();
         break;
-      case "upgrade": //New case
-      case "UPGRADE":  
+      case 2:  
         playerInfo.upgradeAttack();
         break;
-      case "leave": //New case
-      case "LEAVE":
+      case 3:
         window.alert("leaving the store.");
 
         //do nothing, so function will end
